@@ -56,7 +56,7 @@ module OctocatalogDiff
 
         # Node to compile
         cmdline = []
-        cmdline.concat ['master', '--compile', Shellwords.escape(@node)]
+        cmdline.concat ['catalog', 'compile', Shellwords.escape(@node)]
 
         # storeconfigs?
         if @options[:storeconfigs]
