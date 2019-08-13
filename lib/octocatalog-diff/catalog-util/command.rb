@@ -95,7 +95,6 @@ module OctocatalogDiff
           --no-daemonize
           --no-ca
           --color=false
-          --config_version="/bin/echo catalogscript"
         )
 
         # Add environment - only make this variable if preserve_environments is used.
