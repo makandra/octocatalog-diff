@@ -69,6 +69,7 @@ module OctocatalogDiff
         else
           cmdline.concat ['catalog', 'compile', Shellwords.escape(@node)]
         end
+        cmdline.concat ['catalog', 'compile', Shellwords.escape(@node)]
 
         # storeconfigs?
         if @options[:storeconfigs]
