@@ -70,6 +70,11 @@ module OctocatalogDiff
           cmdline.concat ['catalog', 'compile', Shellwords.escape(@node)]
         end
 
+        # use CRL?
+        if @options[:no_crl]
+          cmdline.concat %w(--certificate_revocation=false)
+        end
+
         # storeconfigs?
         if @options[:storeconfigs]
           if @options[:storeconfigs_backend]
