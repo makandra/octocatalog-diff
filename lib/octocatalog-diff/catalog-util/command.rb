@@ -71,6 +71,11 @@ module OctocatalogDiff
         end
         cmdline.concat ['catalog', 'compile', Shellwords.escape(@node)]
 
+        # use CRL?
+        if @options[:no_crl]
+          cmdline.concat %w(--certificate_revocation=false)
+        end
+
         # storeconfigs?
         if @options[:storeconfigs]
           cmdline.concat %w(--storeconfigs --storeconfigs_backend=puppetdb)
