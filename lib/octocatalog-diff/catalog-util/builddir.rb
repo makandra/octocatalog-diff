@@ -367,7 +367,7 @@ module OctocatalogDiff
         # Since Puppet always looks for the key and cert in a file named after the hostname, determine the
         # hostname here for the purposes of naming the files.
         require 'socket'
-        host = Socket.gethostname
+        host = Socket.gethostbyname(Socket.gethostname).first
         install_ssl_client_cert(logger, host, options[:puppetdb_ssl_client_cert])
         install_ssl_client_key(logger, host, options[:puppetdb_ssl_client_key])
         install_ssl_client_password(logger, options[:puppetdb_ssl_client_password])
