@@ -539,7 +539,7 @@ module OctocatalogDiff
         @logger.debug "HashDiff configuration: (use_lcs: #{use_lcs})"
         result = []
         hashdiff_add_remove = Set.new
-        hashdiff_result = HashDiff.diff(catalog1_resources, catalog2_resources, delimiter: "\f", use_lcs: use_lcs)
+        hashdiff_result = Hashdiff.diff(catalog1_resources, catalog2_resources, delimiter: "\f", use_lcs: use_lcs)
         hashdiff_result.each do |obj|
           # Regular change
           if obj[0] == '~'
