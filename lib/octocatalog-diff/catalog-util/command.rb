@@ -56,7 +56,12 @@ module OctocatalogDiff
 
         # Node to compile
         cmdline = []
-        cmdline.concat ['master', '--compile', Shellwords.escape(@node)]
+        cmdline.concat ['catalog', 'compile', Shellwords.escape(@node)]
+
+        # use CRL?
+        if @options[:no_crl]
+          cmdline.concat %w(--certificate_revocation=false)
+        end
 
         # storeconfigs?
         if @options[:storeconfigs]
@@ -95,7 +100,6 @@ module OctocatalogDiff
           --no-daemonize
           --no-ca
           --color=false
-          --config_version="/bin/echo catalogscript"
         )
 
         # Add environment - only make this variable if preserve_environments is used.
