@@ -109,11 +109,17 @@ module OctocatalogDiff
           raise ArgumentError, "server_url_timeout must be a fixnum, got a: #{server_url_timeout.class}"
         end
 
+        puppetdb_conf_params = [
+          "[main]",
+          "server_urls = #{server_urls}",
+          "server_url_timeout = #{server_url_timeout}",
+        ]
+
+        puppetdb_conf_params << "verify_client_certificate = false" unless @options[:puppetdb_ssl_client_cert]
+
         puppetdb_conf = File.join(@tempdir, 'puppetdb.conf')
         File.open(puppetdb_conf, 'w') do |f|
-          f.write "[main]\n"
-          f.write "server_urls = #{server_urls}\n"
-          f.write "server_url_timeout = #{server_url_timeout}\n"
+          f.write puppetdb_conf_params.join("\n")
         end
         logger.debug("Installed puppetdb.conf file at #{puppetdb_conf}")
       end
