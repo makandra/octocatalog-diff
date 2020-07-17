@@ -131,7 +131,7 @@ module OctocatalogDiff
       def install_routes_yaml(logger)
         routes_yaml = File.join(@tempdir, 'routes.yaml')
         routes_hash = {
-          'master' => {
+          'catalog' => {
             'facts' => {
               'terminus' => @facts_terminus,
               'cache' => 'yaml'
