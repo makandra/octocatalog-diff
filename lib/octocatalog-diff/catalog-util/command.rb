@@ -69,7 +69,6 @@ module OctocatalogDiff
         else
           cmdline.concat ['catalog', 'compile', Shellwords.escape(@node)]
         end
-        cmdline.concat ['catalog', 'compile', Shellwords.escape(@node)]
 
         # use CRL?
         if @options[:no_crl]
