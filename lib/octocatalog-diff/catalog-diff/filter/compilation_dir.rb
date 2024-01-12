@@ -66,12 +66,13 @@ module OctocatalogDiff
           value
         end
 
-        def traverse(a)
+        # fix from https://github.com/github/octocatalog-diff/issues/261#issuecomment-1334980032
+        def traverse(a, &proc)
           case a
           when Array
-            a.map { |v| traverse(v, &Proc.new) }
+            a.map { |v| traverse(v, &proc) }
           when Hash
-            traverse(a.values, &Proc.new)
+            traverse(a.values, &proc)
           else
             yield a
           end
