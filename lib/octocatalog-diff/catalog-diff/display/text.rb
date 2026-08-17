@@ -367,13 +367,13 @@ module OctocatalogDiff
 
           # Single line strings
           hash.keys.sort.map do |key|
-            next if hash[key] =~ /\n/
+            next if hash[key].is_a?(String) && hash[key].include?("\n")
             result << left_pad(2 * depth + 4, [key.inspect, ': ', hash[key].inspect].join('')).green
           end
 
           # Multi-line strings
           hash.keys.sort.map do |key|
-            next if hash[key] !~ /\n/
+            next unless hash[key].is_a?(String) && hash[key].include?("\n")
             result << left_pad(2 * depth + 4, [key.inspect, ': >>>'].join('')).green
             result.concat hash[key].split(/\n/).map(&:green)
             result << '<<<'.green
