@@ -1,0 +1,42 @@
+name: Release
+on:
+  push:
+    tags:
+      - '*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@a6b46b8a08edb18935835849f2a17072d5cc8c73 # v1.192.0
+        with:
+          ruby-version: '2.6'
+      - run: bundle install
+
+      - name: Publish to GPR
+        env:
+          GEM_HOST_API_KEY: "Bearer ${{secrets.GITHUB_TOKEN}}"
+        run: |
+          mkdir -p $HOME/.gem
+          touch $HOME/.gem/credentials
+          chmod 0600 $HOME/.gem/credentials
+          printf -- "---\n:github: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+          gem build *.gemspec
+          if [ ${{ github.ref_type }} == "tag" ]; then
+            gem push --verbose \
+              --key github \
+              --host https://rubygems.pkg.github.com/${{ github.repository_owner }} \
+              *.gem
+          fi
+      - name: Upload gem as action artifact
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874
+        if: ${{ always() }}
+        with:
+          path: ./*.gem

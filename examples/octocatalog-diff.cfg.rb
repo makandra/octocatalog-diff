@@ -92,9 +92,18 @@ module OctocatalogDiff
       #   If you don't specify this, SSL will still work, but the tool won't verify the certificate
       #   of the puppetdb server it's connecting to.
       #   More: https://github.com/github/octocatalog-diff/blob/master/doc/configuration-puppetdb.md
+      #
       ##############################################################################################
 
       # settings[:puppetdb_ssl_ca] = '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
+
+      ##############################################################################################
+      # puppetdb_ssl_crl
+      #   Certificate Revocation List provided by Puppetserver. You can specify an absolute path starting with `/`, or a relative path.
+      #
+      ##############################################################################################
+
+      # settings[:puppetdb_ssl_crl] = '/etc/puppetlabs/puppet/ssl/crl.pem'
 
       ##############################################################################################
       # puppetdb_ssl_client_key
@@ -154,6 +163,14 @@ module OctocatalogDiff
 
       settings[:storeconfigs] = false
 
+      ##############################################################################################
+      # storeconfigs_backend
+      #  Override the default `storeconfigs` backend of `puppetdb`
+      #  valid options include `puppetdb`, `yaml`, `json`
+      ##############################################################################################
+
+      settings[:storeconfigs_backend] = 'puppetdb'
+      
       ##############################################################################################
       # bootstrap_script
       #   When you check out your Puppet repository, do you need to run a script to prepare that

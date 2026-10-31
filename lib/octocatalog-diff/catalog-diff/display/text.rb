@@ -307,7 +307,7 @@ module OctocatalogDiff
         # @param string_in [String] Input string, which might contain trailing whitespace
         # @return [String] Modified string
         def self.make_trailing_whitespace_visible(string_in)
-          return string_in unless string_in =~ /\A((?:.|\n)*?)(\s+)(\e\[0m)?\Z/
+          return string_in unless string_in =~ /\A((?:.|\n){1,1000}?)(\s+)(\e\[0m)?\Z/
           beginning = Regexp.last_match(1)
           trailing_space = Regexp.last_match(2)
           end_escape = Regexp.last_match(3)
@@ -367,12 +367,13 @@ module OctocatalogDiff
 
           # Single line strings
           hash.keys.sort.map do |key|
-            next if hash[key] =~ /\n/
+            next if hash[key].kind_of?(String) && hash[key] =~ /\n/
             result << left_pad(2 * depth + 4, [key.inspect, ': ', hash[key].inspect].join('')).green
           end
 
           # Multi-line strings
           hash.keys.sort.map do |key|
+            next if !hash[key].kind_of?(String)
             next if hash[key] !~ /\n/
             result << left_pad(2 * depth + 4, [key.inspect, ': >>>'].join('')).green
             result.concat hash[key].split(/\n/).map(&:green)
@@ -457,7 +458,7 @@ module OctocatalogDiff
         def self.stringify_for_diffy(obj)
           return JSON.pretty_generate(obj) if OctocatalogDiff::Util::Util.object_is_any_of?(obj, [Hash, Array])
           return '""' if obj.is_a?(String) && obj == ''
-          return obj if OctocatalogDiff::Util::Util.object_is_any_of?(obj, [String, Fixnum, Integer, Float])
+          return obj if OctocatalogDiff::Util::Util.object_is_any_of?(obj, [String, Integer, Float])
           "#{class_name_for_diffy(obj.class)}: #{obj.inspect}"
         end
 
